@@ -5,8 +5,8 @@ import random
 class GuessNumber:
     random_number=0 
     number_of_guesses=0 
-    # var=''
-    # info=''
+    bc='SystemButtonFace'
+
     def __init__(self,root,title,geometry):
         
         self.root=root
@@ -45,7 +45,7 @@ class GuessNumber:
         # self.info=StringVar()
         # self.label_info=Label(self.root,textvariable=self.info,text="Guess the number Game",relief=RAISED,font=('Helvetica',14)).pack(pady=20)
 
-        self.label_info=Label(self.root,text="Guess the number Game",font=("Helvetica",14))
+        self.label_info=Label(self.root,text="Guess the number Game",font=("Helvetica",16))
         self.label_info.pack(pady=20)
         
         self.root.resizable(True,True)
@@ -60,7 +60,7 @@ class GuessNumber:
         try:
             top_range_number=int(self.input_top_range_number.get()) 
             self.number_of_guesses=0
-            # self.var.set(self.number_of_guesses)
+           
             self.label_nr_guesses.config(text="Number of guesses:"+str(self.number_of_guesses))
 
             if(top_range_number<=0):
@@ -69,36 +69,49 @@ class GuessNumber:
                 self.random_number=random.randint(0,top_range_number)
         except:
              messagebox.showerror("Error","The value must be a number")
+            
+        finally:
+            root.config(background=self.bc)
 
     
     def mainFunction(self):
         
 
         try:
+            
             guess_number=int(self.input_guess_number.get())
             self.number_of_guesses+=1
             self.label_nr_guesses.config(text="Number of guesses:"+str(self.number_of_guesses))
-            # self.label_guess_number.config(text="Number of guesses:"+self.number_of_guesses)
-            # self.var.set(self.number_of_guesses)
+            
+       
+
+            dif=abs(guess_number-self.random_number)
 
             if(self.random_number==guess_number): 
-                # self.info.set("Your got it!")
-                self.label_info.config(text="You got it!")
+                
+                self.label_info.config(text="You got it!",font=('Brush Script MT',18))
         
             elif(guess_number<self.random_number): 
-                # self.info.set("Your guess is below the number")
-                 self.label_info.config(text="Your guess is below the number")
+                
+                 self.label_info.config(text="Your guess is below the number",font=('Brush Script MT',18))
 
             else:
-                # self.info.set("Your guess is above the number")
-                self.label_info.config(text="Your guess is above the number")
+               
+                self.label_info.config(text="Your guess is above the number",font=('Brush Script MT',18))
+            
         except:
             messagebox.showerror("Error","The value must be a number")
-        
-
-# class Second(GuessNumber):
-#     def __init__(self, root, title, geometry):
-#         super().__init__(root, title, geometry)
+        finally:
+            self.input_guess_number.delete(0,END)
+            if(dif<10):
+                bc=f'#ff{dif}{dif}{dif}{dif}'
+            elif(dif>10):
+                bc=f'#{1}{1}{1}{1}ff'
             
+            root.config(background=bc)
+            self.label_info.config(background=bc)
+            
+
+
 root=Tk()
 g=GuessNumber(root,'Guess Number','350x350')
